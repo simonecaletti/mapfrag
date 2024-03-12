@@ -1,2 +1,2 @@
 # mapfrag
-Mapping subtraction term to fragmenting ones within the NNLOJET framework.
+Mapping subtraction terms to fragmenting ones within the NNLOJET framework.
