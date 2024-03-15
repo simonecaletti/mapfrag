@@ -24,6 +24,7 @@ def checkline(line):
     return True
 
 def clean_line(line):
+    line = line.strip()
     return line.rstrip()
 
 def clean_lines(lines):
@@ -32,10 +33,25 @@ def clean_lines(lines):
         newlines.append(clean_line(line))
     return newlines
 
+def readfile(name):
+    f = open(name,'r')
+    text = f.readlines()
+    text = clean_lines(text)
+    f.close()
+    return text
+
+def readfiles(name_list):
+    text = []
+    for name in name_list:
+        f = open(name, "r")
+        text += clean_lines(f.readlines())
+        f.close()
+    return text 
+
 ####################### from subtraction terms to their compomnents ###########
 
-def check_ant(comp):
-    allowed_ant = ["qgD30II", "qgA30II", "gd30IF"] #to add other ant, remove from here 
+def check_ant(comp):  #notation taken from maple/notation.map
+    allowed_ant = readfiles(["mapfrag/ANTlibrary/Lant30IFset.txt", "mapfrag/ANTlibrary/Lant30IIset.txt"])
     found_ant = False 
     for ant in allowed_ant:
         if ant in comp:
@@ -56,7 +72,7 @@ def get_ant(subsplit):
         sys.exit() 
 
 def check_redme(comp):
-    allowed_redme = ["B1g0Z"] #to add and put separately, temporary 
+    allowed_redme = readfile("mapfrag/MElibrary/mat50set.txt") #to add and put separately, temporary
     found_redme = False 
     for redme in allowed_redme:
         if redme in comp:
@@ -118,7 +134,7 @@ def read_SNLO(mapfile):
     #print(index_of_xx)
     terms = lines[index_of_xx+1:-1]
     
-    terms_dict = break_subterms(terms)
+    terms_dict = break_subterms(terms) #coefficients still missing!!!
 
     return fullme_header, terms_dict 
 
