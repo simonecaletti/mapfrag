@@ -50,6 +50,27 @@ def readfiles(name_list):
 
 ####################### from subtraction terms to their compomnents ###########
 
+def get_sign_from_ant(ant_list):
+    sign = ""
+    for ant in ant_list:
+        if ant[0] == "+" or ant[0] == "-":
+            ant_index = ant_list.index(ant)
+            ant_list[ant_index] = ant[1:]
+            sign = ant[0] + "1"
+    return sign, ant_list  #if sign == "" -> there is a coeff != +-1
+
+def get_coeff(subsplit, subdict): #to apply after the other get_something
+    for a in subdict["ant"]:
+        subsplit.remove(a)
+    subsplit.remove(subdict["redme"])
+    subsplit.remove(subdict["jet"])
+    subsplit.remove(subdict["index"])
+    if subsplit != []:
+        return subsplit[0]
+    else:
+        sign, subdict["ant"] = get_sign_from_ant(subdict["ant"])
+        return sign 
+
 def check_ant(comp):  #notation taken from maple/notation.map
     allowed_ant = readfiles(["mapfrag/ANTlibrary/Lant30IFset.txt", "mapfrag/ANTlibrary/Lant30IIset.txt"])
     found_ant = False 
@@ -102,6 +123,8 @@ def get_index(subsplit):
 def break_subterm(subterm):
     subsplit = subterm.split("*")
     subdict = {"ant":get_ant(subsplit), "redme":get_redme(subsplit), "jet":get_jet(subsplit), "index":get_index(subsplit)}
+    coeff = get_coeff(subsplit, subdict)
+    subdict["coeff"] = coeff 
     return subdict 
 
 def break_subterms(subterm_list):
