@@ -10,6 +10,7 @@ Collection of helper function to write subtraction terms
 
 def make_subterm(term_dict):
     subterm = ""
+    subterm += term_dict["coeff"] + "*"
     for ant in term_dict["ant"]:
         subterm += ant + "*"
     subterm += term_dict["redme"] + "*"
