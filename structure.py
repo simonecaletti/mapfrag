@@ -26,6 +26,12 @@ class SubMap:
     def get_fullme(self):
         return self.fullme
 
+    def get_mapname(self):
+        return self.name
+
+    def get_mapfile(self):
+        return self.mapfile
+
     def get_subterm(self, i):
         return self.subterms[i]
         
@@ -42,3 +48,19 @@ class SubMap:
         mfw.write_header(self.fullme ,self.outfile)
         mfw.write_subterms(mfw.make_subterms(self.subterms), self.outfile)
         return None
+
+    def make_submap(self, new_subterms):
+        self.subterms = mfr.break_subterms(new_subterms)
+        return self.subterms
+
+    def define_outfile(self, outfile):
+        self.outfile = outfile 
+        return None 
+
+    def define_fullme(self, fullme):
+        self.fullme = fullme 
+        return None 
+
+    def define_mapname(self, mapname):
+        self.name = mapname 
+        return None 
