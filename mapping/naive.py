@@ -1,13 +1,21 @@
 #!/bin/python3 
 
 import os, sys 
-from mapfrag.structure import SubMap 
+from mapfrag.structure import SubMap
+import re 
 
 """
 Implementation of the "naive approach" for J->h mapping
 """
 
 ##################### basic steps of the algo ####################
+
+def frag_in_square(jet, p_frag):
+    found_square = False
+    if re.search("\[.," + p_frag + "\]", jet) or re.search("\[" + p_frag + ",.\]", jet):
+        found_square = True
+    #print(jet, found_square)
+    return found_square 
 
 def replace_ant(ant, p_frag):
     if p_frag == "i" or p_frag == "j":
@@ -24,13 +32,20 @@ def replace_redme(redme, p_frag):
         sys.exit()
 
 def replace_jet(jet, p_frag):
+    #print("JET:", jet)
     if p_frag == "i" or p_frag == "j":
         jet_arg = jet[5:] #do not consider the first 5 characters, JET11 or similar
-        jet_frag = jet[:5] + jet_arg.replace(p_frag, "3") #da aggiustare hfrag(3) o hfrag([3]) in base a cosa?
-        return jet_frag 
+        if frag_in_square(jet_arg, p_frag):
+            #print("JETARG:", jet_arg)
+            jet_frag = jet[:5] + "(hfrag" + jet_arg[:jet_arg.index("[")] + "[3])" + jet_arg[jet_arg.index("]")+1:] #from hfrag([i, j]) to hfrag([3])
+        else:
+            #print("JETARG:", jet_arg)
+            jet_frag = jet[:5] + jet_arg.replace(p_frag, "hfrag(3)") #from hfrag(i) to hfrag(3) 
     else:
         print("Trying to fragment particle {} in jet and not allowed".format(p_frag))
         sys.exit()
+    #print(jet_frag)
+    return jet_frag 
 
 def replace_dict(subdict, p_frag):
     newdict = {"ant":[], "redme":"", "jet":"", "index":"", "coeff":""}
