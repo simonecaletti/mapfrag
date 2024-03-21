@@ -69,20 +69,48 @@ def remove_frag(subdict_list):
             subdict_list.remove(subdict)
     return subdict_list 
 
+################## basic functions for fullme ####################
+
+def get_flavour(fullme_name, particles_set, p_frag):
+    return "_g" #to be implemented, atm we always return gluon 
+
+def update_fullme_name(submap, p_frag):
+    return submap.get_fullme_name() + get_flavour(submap.get_fullme_name(), submap.get_fullme_particles(), p_frag)
+
+def replace_fullme_particles(submap, p_frag):
+    oldset = submap.get_fullme_particles()
+    newset = oldset.replace(p_frag, "3")
+    newset = newset.replace("j", p_frag)
+    return newset 
+
+def update_fullme(submap, p_frag):
+    fullme_name = update_fullme_name(submap, p_frag)
+    particles_set = replace_fullme_particles(submap, p_frag)
+    return "FN:=" + fullme_name + particles_set
+
 #################### B-type ######################################
 
-def replace_Btype(submap):
-    subterms_frag = replace_frag(submap.get_subterms(), "i") #first step: particle i now fragment, so "i" -> "3"
+def singlereplace_Btype(submap, p_frag):
+    subterms_frag = replace_frag(submap.get_subterms(), p_frag) #first step: particle i now fragment, so "i" -> "3"
     subterms_frag = remove_frag(subterms_frag) #second step: remove subterms if 3 not in JET, i.e. fragmenting particle goes unresolved
 
     outfile = submap.get_mapname() + "_g.map" #we are assuming we know the flavour of the fragmenting particle, to be recognized automatically
-    newfullme = submap.get_fullme() + "_g" #not correct 
+    newfullme = update_fullme(submap, p_frag) #it works, but we always consider the second parton to be j and do j -> i 
     submap_frag = SubMap(submap.get_mapname(), subterms = subterms_frag, outfile = outfile, fullme = newfullme)
+
     return submap_frag
+
+
+################### C-type ########################################
+
 
 def replace_Ctype():
 
 
     return None 
+
+
+##################
+
 
 

@@ -15,6 +15,8 @@ class SubMap:
         self.subterms = subterms 
         self.outfile = outfile
         self.fullme = fullme
+        self.fullme_name = self.get_fullme_name()
+        self.fullme_particles = self.get_fullme_particles()
 
     def read(self):
         if "SNLO" in self.name:
@@ -53,6 +55,10 @@ class SubMap:
         self.subterms = mfr.break_subterms(new_subterms)
         return self.subterms
 
+    def update_subterms(self, newsubterms):
+        self.subterms = newsubterms 
+        return None
+
     def define_outfile(self, outfile):
         self.outfile = outfile 
         return None 
@@ -63,4 +69,31 @@ class SubMap:
 
     def define_mapname(self, mapname):
         self.name = mapname 
-        return None 
+        return None
+
+    def get_fullme_name(self):
+        return self.fullme[self.fullme.find("=")+1:self.fullme.find("(")]
+
+    def get_fullme_particles(self):
+        return self.fullme[self.fullme.find("("):self.fullme.find(":", self.fullme.find("("))]
+
+    def get_particles(self):
+        return self.get_fullme_particles()[1:-1].split(",")
+
+    def get_initial_state(self):
+        return self.get_particles()[:2]
+
+    def get_final_state(self):
+        return self.get_particles()[2:]
+
+    def get_final_state_partons(self):
+        fs = self.get_final_state()
+        for p in ["Z", "H", "W"]:   #gamma is missing
+            try:
+                fs.remove(p)
+            except ValueError:
+                pass 
+        return fs 
+
+
+
