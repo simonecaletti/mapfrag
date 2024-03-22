@@ -49,10 +49,10 @@ def main(input_file, output_file):
         for line in f_in:
             if line.startswith('FN:='+str(os.path.splitext(input_file)[0])):
                 line = line.replace(str(os.path.splitext(input_file)[0]),str(os.path.splitext(output_file)[0]) )
-            #if 'i' in line:
-            #    line = line.replace('i', '3')
-            if 'Q' in line:
-                line = line.replace('Q', '3')
+            if 'j' in line:
+                line = line.replace('j', '3')
+            #if 'Q' in line:
+            #    line = line.replace('Q', '3')
 
             modified_line = modify_line(line)
             if modified_line is not None:
