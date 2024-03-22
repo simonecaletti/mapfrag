@@ -63,6 +63,7 @@ class SubMap:
         self.outfile = outfile 
         return None 
 
+
     def define_fullme(self, fullme):
         self.fullme = fullme 
         return None 
@@ -94,6 +95,40 @@ class SubMap:
             except ValueError:
                 pass 
         return fs 
+
+class SubTerm():
+    def __init__(self, subdict):
+        self.subdict = subdict 
+
+    def get_particles():
+
+        return None 
+
+class ME(): #class for ME, also redme are ME 
+    def __init__(self, me_string):
+        self.me_string = me_string
+
+    def get_particles(self):
+        return self.me_string[self.me_string.find("(")+1:self.me_string.find(")")].split(",")
+
+    def get_me(self):
+        return self.me_string[:self.me_string.find("(")]
+
+    def replace_particle(self):
+        return None 
+
+
+class Ant(): #class for antennae
+    def __init__(self, ant_string):
+        self.ant_string = ant_string 
+       # self.ant = #name of the ant 
+
+class Jet():
+    def __init__(self, jet_string):
+        self.jet_string = jet_string
+
+
+
 
 
 
