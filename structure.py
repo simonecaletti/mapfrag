@@ -3,6 +3,7 @@
 import os, sys
 import mapfrag.read as mfr 
 import mapfrag.write as mfw
+import mapfrag.flavour as mff
 
 """
 python class for maple subtraction terms
@@ -61,8 +62,7 @@ class SubMap:
 
     def define_outfile(self, outfile):
         self.outfile = outfile 
-        return None 
-
+        return None
 
     def define_fullme(self, fullme):
         self.fullme = fullme 
@@ -107,16 +107,25 @@ class SubTerm():
 class ME(): #class for ME, also redme are ME 
     def __init__(self, me_string):
         self.me_string = me_string
+        self.me = self.get_me()
 
     def get_particles(self):
         return self.me_string[self.me_string.find("(")+1:self.me_string.find(")")].split(",")
 
     def get_me(self):
-        return self.me_string[:self.me_string.find("(")]
+        if "=" in self.me_string:
+            mename = self.me_string[self.me_string.find("=")+1:]
+            #return mename[:mename.find("(")]
+            return mename[2:-16]                                            #hard coded, fullme is just a subchannel and not the real fullme. Not contained in MElibrary 
+        else: 
+            return self.me_string[:self.me_string.find("(")]
 
-    def replace_particle(self):
-        return None 
-
+    def get_flavour(self, MEpath):
+        melib = mff.read_MElibrary(MEpath)
+        for l in melib:
+            if l["me"] == self.me:
+                flavstring = l["flav_string"]
+                return mff.get_flavlist(flavstring)
 
 class Ant(): #class for antennae
     def __init__(self, ant_string):
