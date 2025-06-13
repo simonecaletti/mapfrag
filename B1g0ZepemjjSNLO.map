@@ -1,0 +1,7 @@
+# 1ep 2em to 3qb 4g 5q
+FN:=B1g0ZepemjjSNLO(i,4,j,2,1):
+
+XX:=
++A30FF(i,4,j)*B0g0Z([i,4],[4,j],2,1)*JET22([i,4],[4,j])*a1
+
+:
